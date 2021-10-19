@@ -12,9 +12,11 @@ public class Mapp {
     List<ArrayList<String>> constraintsC=new ArrayList<>();
     int ind=0;
     List<String> colors=new ArrayList<>();
+    ArrayList<Integer> visited=new ArrayList<>();
 
     public Mapp (ArrayList<String> regions){
         this.regions=regions;
+        for (int i=0;i<regions.size();i++) visited.add(0);
         constraintsC.add(new ArrayList<>());
     }
     public void addConstraint(String s1, String s2){
@@ -79,33 +81,24 @@ public class Mapp {
             }
 
             for (int j=0;j<cState.get(i).size();j++){
-                if (cState.get(i).get(j).equals(color)&&indx!=i)
-                {
+
                     for(int k=0;k< constraints.size();k++) {
                         if(constraints.get(k).get(0).equals(regions.get(i))) {
                             if(constraints.get(k).get(1).equals(regions.get(indx)))
-
+                                if (cState.get(i).get(j).equals(color)&&indx!=i)
                                 cState.get(i).remove(j);
                         }
                         else{
                             if(constraints.get(k).get(1).equals(regions.get(i)))
                                 if(constraints.get(k).get(0).equals(regions.get(indx)))
-
+                                    if (cState.get(i).get(j).equals(color)&&indx!=i)
                                     cState.get(i).remove(j);
                         }
                     }
-                }
+
             }
         }
-        if(color.equals("B")){
-            for(int l=0;l<cState.size();l++){
-                System.out.println("{ ");
-                for (int m=0;m<cState.get(l).size();m++){
-                    System.out.print(cState.get(l).get(m)+", ");
-                }
-                System.out.println("}");
-            }
-        }
+
         boolean isValid=true;
         for(int i=0;i<cState.size();i++){
             if(cState.get(i).size()==0)
@@ -127,38 +120,29 @@ public class Mapp {
             }
 
             for (int j=0;j<cState.get(i).size();j++){
-                if (cState.get(i).get(j).equals(color)&&indx!=i)
-                {
+
+
                     for(int k=0;k< constraints.size();k++) {
                         if(constraints.get(k).get(0).equals(regions.get(i))) {
                             if(constraints.get(k).get(1).equals(regions.get(indx)))
-
+                                if (cState.get(i).get(j).equals(color)&&indx!=i)
                                 cState.get(i).remove(j);
                         }
                         else{
                             if(constraints.get(k).get(1).equals(regions.get(i)))
                                 if(constraints.get(k).get(0).equals(regions.get(indx)))
-
+                                    if (cState.get(i).get(j).equals(color)&&indx!=i)
                                     cState.get(i).remove(j);
                         }
                     }
                 }
             }
-        }
 
-
-            for(int l=0;l<cState.size();l++){
-                System.out.println("{ ");
-                for (int m=0;m<cState.get(l).size();m++){
-                    System.out.print(cState.get(l).get(m)+", ");
-                }
-                System.out.println("}");
-            }
 
         return cState;
     }
 
-    public boolean bkt(List<ArrayList<String>> cState){
+    public boolean bkt(List<ArrayList<String>> cState,ArrayList<Integer> visited){
         ///if all regions have exactly one color, print state and return
         boolean isFinal=true;
         for(int i=0;i<cState.size();i++) {
@@ -209,23 +193,24 @@ public class Mapp {
             for(int j=0;j<cState.size();j++){
                 for (int k=0;k<cState.get(j).size();k++){
                     for(int i=0;i<colors.size();i++){
-                        System.out.println("color colors: "+colors.get(i));
-                        System.out.println("color state:"+ cState.get(j).get(k));
-
 
                         if(colors.get(i).equals(cState.get(j).get(k))) {
 
                             if(forwardCheck(cState,colors.get(i),j)) {
                                 List<ArrayList<String>> list=transition(cState,colors.get(i),j);
-                                if(bkt(list)){
-                                    for(int l=0;l<list.size();l++){
-                                        System.out.println("{ ");
-                                        for (int m=0;m<list.get(l).size();m++){
-                                            System.out.print(list.get(l).get(m)+", ");
+                                if(visited.get(j)==0) {
+                                    visited.set(i, 1);
+                                    if (bkt(list, visited)) {
+                                        System.out.println("color used:"+colors.get(i));
+                                        for (int l = 0; l < cState.size(); l++) {
+                                            System.out.print(" { ");
+                                            for (int m = 0; m < cState.get(l).size(); m++) {
+                                                System.out.print(cState.get(l).get(m) + ", ");
+                                            }
+                                            System.out.println("}");
                                         }
-                                        System.out.println("}");
+                                        return true;
                                     }
-                                    return true;
                                 }
 
                             }
