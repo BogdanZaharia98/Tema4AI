@@ -1,9 +1,7 @@
 package com.company;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Mapp {
 
@@ -79,7 +77,7 @@ public class Mapp {
                 cState.set(i,list);
 
             }
-
+            else
             for (int j=0;j<cState.get(i).size();j++){
 
                     for(int k=0;k< constraints.size();k++) {
@@ -118,6 +116,7 @@ public class Mapp {
                 cState.set(i,list);
 
             }
+            else
 
             for (int j=0;j<cState.get(i).size();j++){
 
@@ -138,6 +137,14 @@ public class Mapp {
                 }
             }
 
+        System.out.println("color used:"+color+" , index used: "+indx);
+        for (int l = 0; l < cState.size(); l++) {
+            System.out.print(" { ");
+            for (int m = 0; m < cState.get(l).size(); m++) {
+                System.out.print(cState.get(l).get(m) + ", ");
+            }
+            System.out.println("}");
+        }
 
         return cState;
     }
@@ -151,7 +158,7 @@ public class Mapp {
         }
             if(isFinal) {
                 for(int i=0;i<cState.size();i++){
-                    System.out.println("{ ");
+                    System.out.print("{ ");
                     for (int j=0;j<cState.get(i).size();j++){
                         System.out.print(cState.get(i).get(j)+", ");
                     }
@@ -197,18 +204,12 @@ public class Mapp {
                         if(colors.get(i).equals(cState.get(j).get(k))) {
 
                             if(forwardCheck(cState,colors.get(i),j)) {
-                                List<ArrayList<String>> list=transition(cState,colors.get(i),j);
+
                                 if(visited.get(j)==0) {
-                                    visited.set(i, 1);
+                                    List<ArrayList<String>> list=transition(cState,colors.get(i),j);
+                                    visited.set(j, 1);
                                     if (bkt(list, visited)) {
-                                        System.out.println("color used:"+colors.get(i));
-                                        for (int l = 0; l < cState.size(); l++) {
-                                            System.out.print(" { ");
-                                            for (int m = 0; m < cState.get(l).size(); m++) {
-                                                System.out.print(cState.get(l).get(m) + ", ");
-                                            }
-                                            System.out.println("}");
-                                        }
+
                                         return true;
                                     }
                                 }

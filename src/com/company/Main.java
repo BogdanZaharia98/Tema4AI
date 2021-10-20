@@ -18,7 +18,6 @@ public class Main {
         mapp.addConstraintC("R",1);
         mapp.addConstraintC("G",1);
         mapp.addConstraintC("G",2);
-        mapp.addConstraintC("B",2);
         mapp.getColors();
         mapp.bkt(mapp.constraintsC,mapp.visited);
 
